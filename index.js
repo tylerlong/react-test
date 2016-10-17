@@ -1,38 +1,43 @@
 var MarkdownPlus = React.createClass({
+  getInitialState: function() {
+    return {markdown: ''};
+  },
+  markdownChanged: function(markdown) {
+    this.setState({ markdown });
+  },
   render: function() {
     return (
       <div>
-        <MarkdownPreview />
-        <MarkdownEditor />
+        <MarkdownEditor markdown={this.state.markdown} markdownChanged={this.markdownChanged} />
+        <MarkdownPreview markdown={this.state.markdown} />
       </div>
     );
   }
 });
+
+
+var MarkdownEditor = React.createClass({
+  textChanged: function(e) {
+    let markdown = document.getElementById('markdown-textarea').value;
+    this.props.markdownChanged(markdown);
+  },
+  render: function() {
+    return (
+      <div>
+        <textarea id="markdown-textarea" onChange={_.debounce(this.textChanged, 1000)}>{this.props.markdown}</textarea>
+      </div>
+    );
+  }
+});
+
 
 var MarkdownPreview = React.createClass({
   render: function() {
     return (
-      <div>
-
-      </div>
+      <div dangerouslySetInnerHTML={{__html: mdc.render(this.props.markdown)}} />
     );
   }
 });
-
-var MarkdownEditor = React.createClass({
-  textChanged: function() {
-    console.log('textChange');
-  },
-
-  render: function() {
-    return (
-      <div>
-        <textarea id="markdown-textarea" onChange={_.debounce(this.textChanged, 1000)}># hello world</textarea>
-      </div>
-    );
-  }
-});
-
 
 
 ReactDOM.render(
