@@ -34,7 +34,7 @@ var MarkdownEditor = React.createClass({
 var MarkdownPreview = React.createClass({
   render: function() {
     return (
-      <div dangerouslySetInnerHTML={{__html: mdc.render(this.props.markdown)}} />
+      <div className="markdown-body" dangerouslySetInnerHTML={{__html: mdc.render(this.props.markdown)}} />
     );
   }
 });
