@@ -1,6 +1,6 @@
 var MarkdownPlus = React.createClass({
   getInitialState: function() {
-    return {markdown: ''};
+    return {markdown: (this.props.markdown || '')};
   },
   markdownChanged: function(markdown) {
     this.setState({ markdown });
@@ -41,6 +41,6 @@ var MarkdownPreview = React.createClass({
 
 
 ReactDOM.render(
-  <MarkdownPlus />,
+  <MarkdownPlus markdown="# hello world"/>,
   document.getElementById('example')
 );
