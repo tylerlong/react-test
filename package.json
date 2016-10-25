@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "build": "webpack"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tylerlong/react-test.git"
@@ -15,9 +17,14 @@
   },
   "homepage": "https://github.com/tylerlong/react-test#readme",
   "devDependencies": {
+    "babel-core": "^6.18.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-react": "^6.16.0",
+    "json-loader": "^0.5.4",
     "webpack": "^1.13.2"
   },
   "dependencies": {
+    "markdown-core": "^0.7.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2"
   }
