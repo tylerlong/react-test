@@ -19,19 +19,19 @@ class MarkdownPlus extends React.Component{
 }
 
 
-var MarkdownEditor = React.createClass({
-  textChanged: function(e) {
+class MarkdownEditor extends React.Component{
+  textChanged(e) {
     let markdown = document.getElementById('markdown-textarea').value;
     this.props.markdownChanged(markdown);
-  },
-  render: function() {
+  }
+  render() {
     return (
       <div>
-        <textarea id="markdown-textarea" onChange={_.debounce(this.textChanged, 1000)}>{this.props.markdown}</textarea>
+        <textarea id="markdown-textarea" onChange={_.debounce(this.textChanged.bind(this), 1000)}>{this.props.markdown}</textarea>
       </div>
     );
   }
-});
+}
 
 
 class MarkdownPreview extends React.Component{
