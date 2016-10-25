@@ -1,19 +1,20 @@
-var MarkdownPlus = React.createClass({
-  getInitialState: function() {
-    return {markdown: (this.props.markdown || '')};
-  },
-  markdownChanged: function(markdown) {
+class MarkdownPlus extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {markdown: (props.markdown || '')};
+  }
+  markdownChanged(markdown) {
     this.setState({ markdown });
-  },
-  render: function() {
+  }
+  render() {
     return (
       <div>
-        <MarkdownEditor markdown={this.state.markdown} markdownChanged={this.markdownChanged} />
+        <MarkdownEditor markdown={this.state.markdown} markdownChanged={this.markdownChanged.bind(this)} />
         <MarkdownPreview markdown={this.state.markdown} />
       </div>
     );
   }
-});
+}
 
 
 var MarkdownEditor = React.createClass({
