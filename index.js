@@ -1,3 +1,8 @@
+const React = require('react');
+const ReactDOM = require('react-dom');
+const mdc = require('markdown-core/markdown-core-node');
+
+
 class MarkdownPlus extends React.Component {
   constructor(props) {
     super(props);
