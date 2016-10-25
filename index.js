@@ -1,6 +1,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const mdc = require('markdown-core/markdown-core-node');
+const _ = require('lodash');
 
 
 class MarkdownPlus extends React.Component {
@@ -22,19 +23,22 @@ class MarkdownPlus extends React.Component {
 }
 
 
-var MarkdownEditor = React.createClass({
-  textChanged: function(e) {
-    let markdown = document.getElementById('markdown-textarea').value;
-    this.props.markdownChanged(markdown);
-  },
-  render: function() {
+class MarkdownEditor extends React.Component{
+  constructor(props) {
+    super(props);
+    this.debouncedChange = _.debounce((markdown) => this.props.markdownChanged(markdown), 1000);
+  }
+  textChanged(e) {
+    this.debouncedChange(e.target.value);
+  }
+  render() {
     return (
       <div>
-        <textarea id="markdown-textarea" onChange={_.debounce(this.textChanged, 1000)}>{this.props.markdown}</textarea>
+        <textarea id="markdown-textarea" onChange={this.textChanged.bind(this)} value={this.props.markdown}></textarea>
       </div>
     );
   }
-});
+}
 
 
 var MarkdownPreview = React.createClass({
