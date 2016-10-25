@@ -7,7 +7,9 @@ const _ = require('lodash');
 class MarkdownPlus extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {markdown: (props.markdown || '')};
+    this.state = {
+      markdown: (props.markdown || '')
+    };
   }
   markdownChanged(markdown) {
     this.setState({ markdown });
@@ -26,10 +28,9 @@ class MarkdownPlus extends React.Component {
 class MarkdownEditor extends React.Component{
   constructor(props) {
     super(props);
-    this.debouncedChange = _.debounce((markdown) => this.props.markdownChanged(markdown), 1000);
   }
   textChanged(e) {
-    this.debouncedChange(e.target.value);
+    this.props.markdownChanged(e.target.value);
   }
   render() {
     return (
@@ -40,14 +41,27 @@ class MarkdownEditor extends React.Component{
   }
 }
 
+class MarkdownPreview extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      m: mdc.render(props.markdown),
+    }
+    this.debounce = _.debounce((markdown) => this.setState({
+      m: mdc.render(markdown)
+    }), 1000);
+  }
 
-var MarkdownPreview = React.createClass({
-  render: function() {
+  componentWillReceiveProps(nextProps) {
+    this.debounce(nextProps.markdown)
+  }
+
+  render() {
     return (
-      <div className="markdown-body" dangerouslySetInnerHTML={{__html: mdc.render(this.props.markdown)}} />
+      <div className="markdown-body" dangerouslySetInnerHTML={{__html: this.state.m}} />
     );
   }
-});
+};
 
 
 ReactDOM.render(
