@@ -17,14 +17,18 @@ var MarkdownPlus = React.createClass({
 
 
 var MarkdownEditor = React.createClass({
+
   textChanged: function(e) {
-    let markdown = document.getElementById('markdown-textarea').value;
-    this.props.markdownChanged(markdown);
+    let value = e.currentTarget.value;
+    if(!this._debounceHandler) {
+      this._debounceHandler = _.debounce(this.props.markdownChanged, 1000);
+    }
+    this._debounceHandler(value);
   },
   render: function() {
     return (
       <div>
-        <textarea id="markdown-textarea" onChange={_.debounce(this.textChanged, 1000)}>{this.props.markdown}</textarea>
+        <textarea id="markdown-textarea" onChange={this.textChanged}>{this.props.markdown}</textarea>
       </div>
     );
   }
