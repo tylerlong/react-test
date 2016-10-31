@@ -5,21 +5,30 @@ const _ = require('lodash');
 require('./index.css');
 
 
-class MarkdownPlus extends React.Component{
+class MarkdownPlus extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       markdown: props.markdown || '',
     };
     this.markdownChanged = this.markdownChanged.bind(this);
+    this.markdownOpen = this.markdownOpen.bind(this);
+    this.markdownSave = this.markdownSave.bind(this);
   }
   markdownChanged(markdown) {
     this.setState({ markdown });
   }
+  markdownOpen() {
+    console.log('markdownOpen');
+  }
+  markdownSave() {
+    console.log('markdownSave');
+  }
   render() {
     return (
       <div>
-        <MarkdownEditor markdown={this.state.markdown} markdownChanged={this.markdownChanged} />
+        <MarkdownEditor markdown={this.state.markdown} markdownChanged={this.markdownChanged}
+          markdownOpen={this.markdownOpen} markdownSave={this.markdownSave} />
         <MarkdownPreview markdown={this.state.markdown} />
       </div>
     );
@@ -27,7 +36,7 @@ class MarkdownPlus extends React.Component{
 }
 
 
-class MarkdownEditor extends React.Component{
+class MarkdownEditor extends React.Component {
   constructor(props) {
     super(props);
     this.markdownChanged = _.debounce(this.props.markdownChanged, 1000);
@@ -40,22 +49,24 @@ class MarkdownEditor extends React.Component{
     return (
       <div>
         <textarea id="markdown-textarea" onChange={this.textChanged}>{this.props.markdown}</textarea>
+        <button onClick={this.props.markdownOpen}>Open</button>
+        <button onClick={this.props.markdownSave}>Save</button>
       </div>
     );
   }
 }
 
 
-class MarkdownPreview extends React.Component{
+class MarkdownPreview extends React.Component {
   render() {
     return (
-      <div className="markdown-body" dangerouslySetInnerHTML={{__html: mdc.render(this.props.markdown)}} />
+      <div className="markdown-body" dangerouslySetInnerHTML={{ __html: mdc.render(this.props.markdown) }} />
     );
   }
 }
 
 
 ReactDOM.render(
-  <MarkdownPlus markdown="# hello world"/>,
+  <MarkdownPlus markdown="# hello world" />,
   document.getElementById('root')
 );
