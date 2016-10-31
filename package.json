@@ -2,9 +2,10 @@
   "name": "react-test",
   "version": "0.1.0",
   "description": "React test",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "build": "webpack --progress --colors --watch"
+    "build": "webpack --progress --colors --watch",
+    "run": "electron ."
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "webpack": "^1.13.3"
   },
   "dependencies": {
+    "electron": "^1.4.4",
     "lodash": "^4.16.4",
     "markdown-core": "^0.7.0",
     "react": "^15.3.2",
