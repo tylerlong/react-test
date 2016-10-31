@@ -3,6 +3,7 @@ const ReactDOM = require('react-dom');
 const mdc = require('markdown-core/markdown-core-node');
 const _ = require('lodash');
 require('./index.css');
+const main = require('electron').remote.require('./main');
 
 
 class MarkdownPlus extends React.Component {
@@ -20,9 +21,11 @@ class MarkdownPlus extends React.Component {
   }
   markdownOpen() {
     console.log('markdownOpen');
+    main.openMarkdown();
   }
   markdownSave() {
     console.log('markdownSave');
+    main.saveMarkdown();
   }
   render() {
     return (
