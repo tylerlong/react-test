@@ -17,8 +17,8 @@ class MarkdownPlus extends React.Component {
     this.markdownOpen = this.markdownOpen.bind(this);
     this.markdownSave = this.markdownSave.bind(this);
   }
-  markdownChanged(markdown) {
-    this.setState({ markdown });
+  markdownChanged(e) {
+    this.setState({ markdown: e.target.value });
   }
   markdownOpen() {
     console.log('markdownOpen');
@@ -55,17 +55,10 @@ class MarkdownPlus extends React.Component {
 
 
 class MarkdownEditor extends React.Component {
-  constructor(props) {
-    super(props);
-    this.textChanged = this.textChanged.bind(this);
-  }
-  textChanged(e) {
-    this.props.markdownChanged(e.target.value);
-  }
   render() {
     return (
       <div>
-        <textarea id="markdown-textarea" onChange={this.textChanged} value={this.props.markdown} />
+        <textarea id="markdown-textarea" onChange={this.props.markdownChanged} value={this.props.markdown} />
         <button onClick={this.props.markdownOpen}>Open</button>
         <button onClick={this.props.markdownSave}>Save</button>
       </div>
