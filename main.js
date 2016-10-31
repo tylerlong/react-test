@@ -48,26 +48,3 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
-
-exports.openMarkdown = () => {
-  console.log('openMarkdown');
-  dialog.showOpenDialog(function (fileNames) {
-    if (fileNames === undefined) {
-      console.log("No file selected");
-    } else {
-      const fileName = fileNames[0];
-      fs.readFile(fileName, 'utf-8', function (err, data) {
-        if (err) {
-          console.log("An error ocurred reading the file :" + err.message);
-          return;
-        }
-        console.log("The file content is : " + data);
-      });
-    }
-  });
-};
-
-exports.saveMarkdown = () => {
-  console.log('saveMarkdown');
-};

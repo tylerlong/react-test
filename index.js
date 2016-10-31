@@ -3,7 +3,8 @@ const ReactDOM = require('react-dom');
 const mdc = require('markdown-core/markdown-core-node');
 const _ = require('lodash');
 require('./index.css');
-const { openMarkdown, saveMarkdown } = require('electron').remote.require('./main');
+const { dialog } = require('electron').remote;
+const fs = require('fs');
 
 
 class MarkdownPlus extends React.Component {
@@ -21,7 +22,21 @@ class MarkdownPlus extends React.Component {
   }
   markdownOpen() {
     console.log('markdownOpen');
-    openMarkdown();
+    const _this = this;
+    dialog.showOpenDialog((fileNames) => {
+      if (fileNames === undefined) {
+        console.log("No file selected");
+      } else {
+        const fileName = fileNames[0];
+        fs.readFile(fileName, 'utf-8', (err, data) => {
+          if (err) {
+            console.log("An error ocurred reading the file :" + err.message);
+            return;
+          }
+          _this.setState({ markdown: data });
+        });
+      }
+    });
   }
   markdownSave() {
     console.log('markdownSave');
@@ -42,7 +57,8 @@ class MarkdownPlus extends React.Component {
 class MarkdownEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.markdownChanged = _.debounce(this.props.markdownChanged, 1000);
+    // this.markdownChanged = _.debounce(this.props.markdownChanged, 1000);
+    this.markdownChanged = this.props.markdownChanged;
     this.textChanged = this.textChanged.bind(this);
   }
   textChanged(e) {
@@ -51,7 +67,7 @@ class MarkdownEditor extends React.Component {
   render() {
     return (
       <div>
-        <textarea id="markdown-textarea" onChange={this.textChanged} defaultValue={this.props.markdown} />
+        <textarea id="markdown-textarea" onChange={this.textChanged} value={this.props.markdown} />
         <button onClick={this.props.markdownOpen}>Open</button>
         <button onClick={this.props.markdownSave}>Save</button>
       </div>
