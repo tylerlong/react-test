@@ -21,7 +21,6 @@ class MarkdownPlus extends React.Component {
     this.setState({ markdown: e.target.value });
   }
   markdownOpen() {
-    console.log('markdownOpen');
     const _this = this;
     dialog.showOpenDialog((fileNames) => {
       if (fileNames === undefined) {
@@ -30,17 +29,24 @@ class MarkdownPlus extends React.Component {
         const fileName = fileNames[0];
         fs.readFile(fileName, 'utf-8', (err, data) => {
           if (err) {
-            console.log("An error ocurred reading the file :" + err.message);
+            alert("An error ocurred reading the file: " + err.message);
             return;
           }
-          _this.setState({ markdown: data });
+          _this.setState({ markdown: data, fileName });
         });
       }
     });
   }
   markdownSave() {
-    console.log('markdownSave');
-    saveMarkdown();
+    if (this.state.fileName) {
+      fs.writeFile(this.state.fileName, this.state.markdown, function (err) {
+        if (err) {
+          alert("An error ocurred updating the file: " + err.message);
+          return;
+        }
+        alert("The file has been succesfully saved");
+      });
+    }
   }
   render() {
     return (
