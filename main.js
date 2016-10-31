@@ -50,8 +50,8 @@ app.on('activate', () => {
 
 exports.openMarkdown = () => {
   console.log('openMarkdown');
-}
+};
 
 exports.saveMarkdown = () => {
   console.log('saveMarkdown');
-}
+};
