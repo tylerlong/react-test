@@ -1,0 +1,32 @@
+{
+  "name": "react-test",
+  "version": "0.1.0",
+  "description": "React test",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --progress --colors --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tylerlong/react-test.git"
+  },
+  "author": "Tyler Long <tyler4long@gmail.com> (https://github.com/tylerlong)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tylerlong/react-test/issues"
+  },
+  "homepage": "https://github.com/tylerlong/react-test#readme",
+  "devDependencies": {
+    "babel-core": "^6.18.0",
+    "babel-loader": "^6.2.7",
+    "babel-preset-react": "^6.16.0",
+    "json-loader": "^0.5.4",
+    "webpack": "^1.13.3"
+  },
+  "dependencies": {
+    "lodash": "^4.16.4",
+    "markdown-core": "^0.7.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  }
+}
