@@ -48,7 +48,7 @@ class MarkdownEditor extends React.Component {
   render() {
     return (
       <div>
-        <textarea id="markdown-textarea" onChange={this.textChanged}>{this.props.markdown}</textarea>
+        <textarea id="markdown-textarea" onChange={this.textChanged} defaultValue={this.props.markdown} />
         <button onClick={this.props.markdownOpen}>Open</button>
         <button onClick={this.props.markdownSave}>Save</button>
       </div>
