@@ -57,12 +57,10 @@ class MarkdownPlus extends React.Component {
 class MarkdownEditor extends React.Component {
   constructor(props) {
     super(props);
-    // this.markdownChanged = _.debounce(this.props.markdownChanged, 1000);
-    this.markdownChanged = this.props.markdownChanged;
     this.textChanged = this.textChanged.bind(this);
   }
   textChanged(e) {
-    this.markdownChanged(e.target.value);
+    this.props.markdownChanged(e.target.value);
   }
   render() {
     return (
