@@ -58,17 +58,11 @@ class MarkdownPlus extends React.Component {
 
 
 class MarkdownEditor extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
-  }
-  handleChange() {
-    this.props.onUserInput(this.refs.textarea.value);
-  }
   render() {
     return (
       <div>
-        <textarea ref="textarea" id="markdown-textarea" onChange={this.handleChange} value={this.props.markdown} />
+        <textarea ref="textarea" id="markdown-textarea" onChange={() => this.props.onUserInput(this.refs.textarea.value)}
+          value={this.props.markdown} />
         <button onClick={this.props.markdownOpen}>Open</button>
         <button onClick={this.props.markdownSave}>Save</button>
         <span> {this.props.fileName}</span>
