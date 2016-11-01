@@ -8,7 +8,7 @@ const fs = require('fs');
 const { createStore } = require('redux');
 
 
-const reducer = (state = { markdown: '', fileName: false }, action) => {
+const reducer = (state = { markdown: '', fileName: '' }, action) => {
   switch (action.type) {
     case 'UPDATE_MARKDOWN':
       return Object.assign({}, state, {
@@ -23,7 +23,6 @@ const reducer = (state = { markdown: '', fileName: false }, action) => {
   }
 }
 const store = createStore(reducer);
-
 
 
 class MarkdownPlus extends React.Component {
@@ -56,7 +55,7 @@ class MarkdownPlus extends React.Component {
   }
   markdownSave() {
     const { markdown, fileName } = this.props.state;
-    if (fileName) {
+    if (fileName != '') {
       fs.writeFile(fileName, markdown, function (err) {
         if (err) {
           alert("An error ocurred updating the file: " + err.message);
@@ -67,10 +66,10 @@ class MarkdownPlus extends React.Component {
     }
   }
   render() {
-    const { markdown } = this.props.state;
+    const { markdown, fileName } = this.props.state;
     return (
       <div>
-        <MarkdownEditor markdown={markdown} onUserInput={this.handleUserInput}
+        <MarkdownEditor fileName={fileName} markdown={markdown} onUserInput={this.handleUserInput}
           markdownOpen={this.markdownOpen} markdownSave={this.markdownSave} />
         <MarkdownPreview markdown={markdown} />
       </div>
@@ -93,6 +92,7 @@ class MarkdownEditor extends React.Component {
         <textarea ref="textarea" id="markdown-textarea" onChange={this.handleChange} value={this.props.markdown} />
         <button onClick={this.props.markdownOpen}>Open</button>
         <button onClick={this.props.markdownSave}>Save</button>
+        <span> {this.props.fileName}</span>
       </div>
     );
   }
