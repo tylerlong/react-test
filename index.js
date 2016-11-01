@@ -11,12 +11,8 @@ const { createStore } = require('redux');
 class MarkdownPlus extends React.Component {
   constructor(props) {
     super(props);
-    this.handleUserInput = this.handleUserInput.bind(this);
     this.markdownOpen = this.markdownOpen.bind(this);
     this.markdownSave = this.markdownSave.bind(this);
-  }
-  handleUserInput(markdown) {
-    this.props.updateMarkdown(markdown);
   }
   markdownOpen() {
     const _this = this;
@@ -52,7 +48,7 @@ class MarkdownPlus extends React.Component {
     const { markdown, fileName } = this.props.state;
     return (
       <div>
-        <MarkdownEditor fileName={fileName} markdown={markdown} onUserInput={this.handleUserInput}
+        <MarkdownEditor fileName={fileName} markdown={markdown} onUserInput={this.props.updateMarkdown}
           markdownOpen={this.markdownOpen} markdownSave={this.markdownSave} />
         <MarkdownPreview markdown={markdown} />
       </div>
