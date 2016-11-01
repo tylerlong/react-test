@@ -15,7 +15,7 @@ class MarkdownPlus extends React.Component {
     this.markdownSave = this.markdownSave.bind(this);
   }
   markdownOpen() {
-    const _this = this;
+    const { updateMarkdown, updateFileName } = this.props.callbacks;
     dialog.showOpenDialog((fileNames) => {
       if (fileNames === undefined) {
         console.log("No file selected");
@@ -26,8 +26,8 @@ class MarkdownPlus extends React.Component {
             alert("An error ocurred reading the file: " + err.message);
             return;
           }
-          this.props.updateMarkdown(data);
-          this.props.updateFileName(fileName);
+          updateMarkdown(data);
+          updateFileName(fileName);
         });
       }
     });
@@ -46,9 +46,10 @@ class MarkdownPlus extends React.Component {
   }
   render() {
     const { markdown, fileName } = this.props.state;
+    const { updateMarkdown } = this.props.callbacks;
     return (
       <div>
-        <MarkdownEditor fileName={fileName} markdown={markdown} onUserInput={this.props.updateMarkdown}
+        <MarkdownEditor fileName={fileName} markdown={markdown} onUserInput={updateMarkdown}
           markdownOpen={this.markdownOpen} markdownSave={this.markdownSave} />
         <MarkdownPreview markdown={markdown} />
       </div>
@@ -97,9 +98,12 @@ const reducer = (state = { markdown: '', fileName: '' }, action) => {
 }
 const store = createStore(reducer);
 const rootElement = document.getElementById('root');
+const callbacks = {
+  updateMarkdown: (markdown) => store.dispatch({ type: 'UPDATE_MARKDOWN', markdown }),
+  updateFileName: (fileName) => store.dispatch({ type: 'UPDATE_FILENAME', fileName }),
+};
 const render = () => ReactDOM.render(
-  <MarkdownPlus state={store.getState()} updateMarkdown={(markdown) => store.dispatch({ type: 'UPDATE_MARKDOWN', markdown })}
-    updateFileName={(fileName) => store.dispatch({ type: 'UPDATE_FILENAME', fileName })} />,
+  <MarkdownPlus state={store.getState()} callbacks={callbacks}/>,
   rootElement
 );
 render();
