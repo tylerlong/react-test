@@ -55,8 +55,9 @@ class MarkdownPlus extends React.Component {
     });
   }
   markdownSave() {
-    if (this.props.state.fileName) {
-      fs.writeFile(this.props.state.fileName, this.props.state.markdown, function (err) {
+    const { markdown, fileName } = this.props.state;
+    if (fileName) {
+      fs.writeFile(fileName, markdown, function (err) {
         if (err) {
           alert("An error ocurred updating the file: " + err.message);
           return;
@@ -66,11 +67,12 @@ class MarkdownPlus extends React.Component {
     }
   }
   render() {
+    const { markdown } = this.props.state;
     return (
       <div>
-        <MarkdownEditor markdown={this.props.state.markdown} onUserInput={this.handleUserInput}
+        <MarkdownEditor markdown={markdown} onUserInput={this.handleUserInput}
           markdownOpen={this.markdownOpen} markdownSave={this.markdownSave} />
-        <MarkdownPreview markdown={this.props.state.markdown} />
+        <MarkdownPreview markdown={markdown} />
       </div>
     );
   }
