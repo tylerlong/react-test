@@ -29,16 +29,11 @@ const store = createStore(reducer);
 class MarkdownPlus extends React.Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   markdown: props.markdown || '',
-    //   fileName: false,
-    // };
     this.handleUserInput = this.handleUserInput.bind(this);
     this.markdownOpen = this.markdownOpen.bind(this);
     this.markdownSave = this.markdownSave.bind(this);
   }
   handleUserInput(markdown) {
-    // this.setState({ markdown });
     store.dispatch({ type: 'UPDATE_MARKDOWN', markdown });
   }
   markdownOpen() {
@@ -53,7 +48,6 @@ class MarkdownPlus extends React.Component {
             alert("An error ocurred reading the file: " + err.message);
             return;
           }
-          // _this.setState({ markdown: data, fileName });
           store.dispatch({ type: 'UPDATE_MARKDOWN', markdown: data });
           store.dispatch({ type: 'UPDATE_FILENAME', fileName });
         });
@@ -112,10 +106,10 @@ class MarkdownPreview extends React.Component {
 }
 
 
-const rootEl = document.getElementById('root')
+const rootElement = document.getElementById('root');
 const render = () => ReactDOM.render(
   <MarkdownPlus state={store.getState()} />,
-  rootEl
+  rootElement
 );
 render();
 store.subscribe(render);
