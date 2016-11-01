@@ -5,21 +5,41 @@ const _ = require('lodash');
 require('./index.css');
 const { dialog } = require('electron').remote;
 const fs = require('fs');
+const { createStore } = require('redux');
+
+
+const reducer = (state = { markdown: '', fileName: false }, action) => {
+  switch (action.type) {
+    case 'UPDATE_MARKDOWN':
+      return Object.assign({}, state, {
+        markdown: action.markdown
+      });
+    case 'UPDATE_FILENAME':
+      return Object.assign({}, state, {
+        fileName: action.fileName
+      });
+    default:
+      return state;
+  }
+}
+const store = createStore(reducer);
+
 
 
 class MarkdownPlus extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      markdown: props.markdown || '',
-      fileName: false,
-    };
+    // this.state = {
+    //   markdown: props.markdown || '',
+    //   fileName: false,
+    // };
     this.handleUserInput = this.handleUserInput.bind(this);
     this.markdownOpen = this.markdownOpen.bind(this);
     this.markdownSave = this.markdownSave.bind(this);
   }
   handleUserInput(markdown) {
-    this.setState({ markdown });
+    // this.setState({ markdown });
+    store.dispatch({ type: 'UPDATE_MARKDOWN', markdown });
   }
   markdownOpen() {
     const _this = this;
@@ -33,14 +53,16 @@ class MarkdownPlus extends React.Component {
             alert("An error ocurred reading the file: " + err.message);
             return;
           }
-          _this.setState({ markdown: data, fileName });
+          // _this.setState({ markdown: data, fileName });
+          store.dispatch({ type: 'UPDATE_MARKDOWN', markdown: data });
+          store.dispatch({ type: 'UPDATE_FILENAME', fileName });
         });
       }
     });
   }
   markdownSave() {
-    if (this.state.fileName) {
-      fs.writeFile(this.state.fileName, this.state.markdown, function (err) {
+    if (this.props.state.fileName) {
+      fs.writeFile(this.props.state.fileName, this.props.state.markdown, function (err) {
         if (err) {
           alert("An error ocurred updating the file: " + err.message);
           return;
@@ -52,9 +74,9 @@ class MarkdownPlus extends React.Component {
   render() {
     return (
       <div>
-        <MarkdownEditor markdown={this.state.markdown} onUserInput={this.handleUserInput}
+        <MarkdownEditor markdown={this.props.state.markdown} onUserInput={this.handleUserInput}
           markdownOpen={this.markdownOpen} markdownSave={this.markdownSave} />
-        <MarkdownPreview markdown={this.state.markdown} />
+        <MarkdownPreview markdown={this.props.state.markdown} />
       </div>
     );
   }
@@ -90,7 +112,10 @@ class MarkdownPreview extends React.Component {
 }
 
 
-ReactDOM.render(
-  <MarkdownPlus markdown="# hello world" />,
-  document.getElementById('root')
+const rootEl = document.getElementById('root')
+const render = () => ReactDOM.render(
+  <MarkdownPlus state={store.getState()} />,
+  rootEl
 );
+render();
+store.subscribe(render);
