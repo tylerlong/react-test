@@ -8,23 +8,6 @@ const fs = require('fs');
 const { createStore } = require('redux');
 
 
-const reducer = (state = { markdown: '', fileName: '' }, action) => {
-  switch (action.type) {
-    case 'UPDATE_MARKDOWN':
-      return Object.assign({}, state, {
-        markdown: action.markdown
-      });
-    case 'UPDATE_FILENAME':
-      return Object.assign({}, state, {
-        fileName: action.fileName
-      });
-    default:
-      return state;
-  }
-}
-const store = createStore(reducer);
-
-
 class MarkdownPlus extends React.Component {
   constructor(props) {
     super(props);
@@ -33,7 +16,7 @@ class MarkdownPlus extends React.Component {
     this.markdownSave = this.markdownSave.bind(this);
   }
   handleUserInput(markdown) {
-    store.dispatch({ type: 'UPDATE_MARKDOWN', markdown });
+    this.props.updateMarkdown(markdown);
   }
   markdownOpen() {
     const _this = this;
@@ -47,8 +30,8 @@ class MarkdownPlus extends React.Component {
             alert("An error ocurred reading the file: " + err.message);
             return;
           }
-          store.dispatch({ type: 'UPDATE_MARKDOWN', markdown: data });
-          store.dispatch({ type: 'UPDATE_FILENAME', fileName });
+          this.props.updateMarkdown(data);
+          this.props.updateFileName(fileName);
         });
       }
     });
@@ -108,9 +91,25 @@ class MarkdownPreview extends React.Component {
 }
 
 
+const reducer = (state = { markdown: '', fileName: '' }, action) => {
+  switch (action.type) {
+    case 'UPDATE_MARKDOWN':
+      return Object.assign({}, state, {
+        markdown: action.markdown
+      });
+    case 'UPDATE_FILENAME':
+      return Object.assign({}, state, {
+        fileName: action.fileName
+      });
+    default:
+      return state;
+  }
+}
+const store = createStore(reducer);
 const rootElement = document.getElementById('root');
 const render = () => ReactDOM.render(
-  <MarkdownPlus state={store.getState()} />,
+  <MarkdownPlus state={store.getState()} updateMarkdown={(markdown) => store.dispatch({ type: 'UPDATE_MARKDOWN', markdown })}
+    updateFileName={(fileName) => store.dispatch({ type: 'UPDATE_FILENAME', fileName })} />,
   rootElement
 );
 render();
